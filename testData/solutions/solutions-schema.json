@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "gpii-solutions",
+    "description": "GPII Solutions Registry",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                "description": ""
+            },
+            "id": {
+                "type": "string",
+                "description": ""
+            },
+            "contexts": {
+                "type": "object"
+            },
+            "settingsHandlers": {
+                "type": "array"
+            },
+            "lifecycleManager": {
+                "type": "object"  
+            }
+        }
+    }
+}
