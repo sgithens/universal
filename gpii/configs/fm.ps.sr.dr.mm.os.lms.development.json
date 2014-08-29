@@ -19,6 +19,7 @@
         "../node_modules/ontologyServer/configs/development.json",
         "../node_modules/lifecycleManager/configs/development.json",
         "../node_modules/preferencesServer/configs/development.json",
-        "../node_modules/solutionsRegistry/configs/development.json"
+        "../node_modules/solutionsRegistry/configs/development.json",
+        "../node_modules/securityGateway/configs/development.json"
     ]
 }

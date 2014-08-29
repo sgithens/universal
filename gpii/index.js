@@ -12,6 +12,7 @@ require("flowManager");
 require("settingsHandlers");
 require("preferencesServer");
 require("ontologyServer");
+require("securityGateway");
 
 var gpii = fluid.registerNamespace("gpii");
 
