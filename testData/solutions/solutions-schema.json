@@ -1,27 +1,82 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "gpii-solutions",
-    "description": "GPII Solutions Registry",
-    "type": "array",
-    "items": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "type": "string",
-                "description": ""
+    "title": "gpii-solution",
+    "description": "GPII Registry Solution",
+    "type": "object",
+    "properties": {
+        "name": { 
+            "type": "string"
+        },
+        "contexts": {
+            "type": "object"
+            
+        },
+        "settingsHandlers": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    { "$ref": "#/definitions/settingsHandler" }
+                ]
+            }
+        },
+        "lifecycleManager": {
+            "type": "object",
+            "properties": {
+                "start": { "$ref": "#/definitions/lifecycleAction" },
+                "stop": { "$ref": "#/definitions/lifecycleAction" }
             },
-            "id": {
-                "type": "string",
-                "description": ""
+            "required": ["start", "stop"]
+        }
+    },
+    "required": ["name", "contexts", "settingsHandlers", "lifecycleManager"],
+    "additionalProperties": false,
+    "definitions": {
+        "settingsHandler": {
+            "type": "object",
+            "properties": {
+                "type": { "type": "string", 
+                          "enum": [ "gpii.settingsHandlers.noSettings",
+                                    "gpii.androidPersistentConfiguration",
+                                    "gpii.androidAudioManager.volume",
+                                    "gpii.androidSettings",
+                                    "gpii.settingsHandlers.XMLHandler",
+                                    "gpii.gsettings",
+                                    "gpii.orca",
+                                    "gpii.alsa",
+                                    "gpii.xrandr",
+                                    "gpii.settingsHandlers.INISettingsHandler",
+                                    "gpii.windows.registrySettingsHandler",
+                                    "gpii.settingsHandlers.JSONSettingsHandler",
+                                    "gpii.windows.spiSettingsHandler" ]
+                },
+                "options": { "type": "object" },
+                "capabilities": { "type": "array" },
+                "capabilitiesTransformations": { "type": "object" }
             },
-            "contexts": {
-                "type": "object"
-            },
-            "settingsHandlers": {
-                "type": "array"
-            },
-            "lifecycleManager": {
-                "type": "object"  
+            "required": [ "type", "capabilities" ],
+            "additionalProperties": true
+        },
+        "lifecycleAction": {
+            "type": "array",
+            "items": {
+                "format": "table",
+                "oneOf": [
+                    {
+                        "type": "string", "enum": ["setSettings"], "title": "Set Settings"
+                    },
+                    {
+                        "type": "string", "enum": ["restoreSettings"], "title": "Restore Settings"
+                    },
+                    {
+                        "type": "object",
+                        "title": "Lifecycle Action"
+                        "properties": {
+                            "type": { "type": "string" }
+                        },
+                        "required": [ "type" ],
+                        "additionalProperties": true
+                    }
+                ]
             }
         }
     }
