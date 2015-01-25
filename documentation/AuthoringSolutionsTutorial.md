@@ -126,7 +126,43 @@ Also, take a look at `${{environment}.APPDATA}`.  Inside our document processing
 
 TODO Provide full path example of what the path above resolves to when I get back to a windows machine.
 
-TODO Point to further/future documentation that says what string variables are available in which fields
+TODO Point to further/future documentation that says what string variables are available in which fields.
+
+#### Capabilities
+
+The next two parts of the settings handler require a bit more overview and explanation. These are the `capabilities` and `capabilitiesTransformations` sections.
+
+The `capabilities` section, true to it's name, lists the capabilities of your solution. But what does that mean practically? Typically the items here fall in to 2 categories. First, you'll usually specify a capabilitiy that is really just the name, or id, of your solution. So if a user always uses JAWS on their other machines, and wants to use JAWS specifically rather than another screenreader, they can specify that. But the capabilities can also list more generic terms that are often found in the common terms list. ( You can see an example of most of our common terms in `universal/testData/ontologies/ISO24751-flat.json` ) For example, if your application was an onscreen keyboard, you could list `control.onscreenKeyboard`.
+
+These items are all taken in to consideration during the *Matchmaking* process. This occurs once a user has keyed in and their needs and preferences have been fetched. At this point the GPII must make the decision of what is the best set of solutions to start for that user.  It may be easy to decide if they specifically indicate that they want JAWS, but it is not always so easy if they merely have a broader set of common preferences. Then it's the job of the match maker to put things together.
+
+The GPII has several matchmaker plugins, and it's likely a component that will develop more intelligence over time. For now, we'll just list the fact that we're JAWS, and available to the system as such.
+
+```json
+"capabilities": [
+    "applications.com\\.freedomscientific\\.jaws.id"
+]
+```
+
+As you can see, it's just our solution ID between `applications.` and `.id` with an extra level of escaping within the dots of our ID.
+
+TODO Remember why it looks like this, and what the postfix `.id` is for.
+
+#### Transformations
+
+The next section is `capabilitiesTransformations`. We will go over it in some detail here, and then provide links to further reading and documentation. It's a very important part of adapting your solution to the broad needs of users, but can be complicated at first.
+
+First, let's assume we have a user with the following preferences:
+
+```json
+"preferences": {
+    "http://registry.gpii.net/applications/com.freedomscientific.jaws": {
+        "cloud4allVoiceProfile-GlobalContext.Speed": 115
+    }
+}
+```
+
+
 
 ### The Finished Example
 
