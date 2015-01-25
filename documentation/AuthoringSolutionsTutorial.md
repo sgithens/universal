@@ -152,6 +152,8 @@ TODO Remember why it looks like this, and what the postfix `.id` is for.
 
 The next section is `capabilitiesTransformations`. We will go over it in some detail here, and then provide links to further reading and documentation. It's a very important part of adapting your solution to the broad needs of users, but can be complicated at first.
 
+We will look at two users, one who explicity lists JAWS in their needs and preferences, and another one who's usage of JAWS is inferred from common terms they have specified.
+
 First, let's assume we have a user with the following preferences:
 
 ```json
@@ -161,6 +163,68 @@ First, let's assume we have a user with the following preferences:
     }
 }
 ```
+
+In this case they are specifying that JAWS is a solution they want to use whenever it's available. Inside of that preference they can list specific preferences that should be getting set. Here we have a single property `cloud4allVoiceProfile-GlobalContext.Speed`. In the INI file this will translate into a property `Speed` inside of the section `cloud4allVoiceProfile-GlobalContext`.
+
+Because it is a direct reference to one of the properties, the exact value 115 is used as is.
+
+TODO: Explain why the full registry URL is required here instead of just the application ID.
+
+At this point we'll mention as an aside that this is a minor workaround (and why this is solution example isn't production ready), in that ahead of time we're creating a JAWS profile called `cloud4allVoiceProfile`. This is a case you may run into sometimes, are issues that must be dealt with the first time an application is launched.
+
+Let's take a look at our transforms now, and a profile that uses them. But first, what are we transforming? We are transforming the values of a users needs and preferences that are specified in common terms, to the *exact* values required by the application.  As an example of a measurement we're all familier with, imagine that there was a common term whose measurement was of tempature, and the units for the common term were in celcius.  Now, what if there was an application that required it's analogous preference in farenheit? We'd have to transform it from Celcius to Farenheit, and that's the exact idea behind what's happening here.
+
+So again, here are our transformations:
+
+```json
+                "capabilitiesTransformations": {
+                    "cloud4allVoiceProfile-GlobalContext\\.Punctuation": {
+                        "transform": {
+                            "type": "fluid.transforms.valueMapper",
+                            "inputPath": "http://registry\\.gpii\\.net/common/punctuationVerbosity",
+                            "options": {
+                                "none": {
+                                    "outputValue": 0
+                                },
+                                "some": {
+                                    "outputValue": 1
+                                },
+                                "most": {
+                                    "outputValue": 2
+                                },
+                                "all": {
+                                    "outputValue": 3
+                                }
+                            }
+                        }
+                    },
+                    "cloud4allVoiceProfile-GlobalContext\\.Speed": {
+                        "transform": {
+                            "type": "fluid.transforms.linearScale",
+                            "valuePath": "http://registry\\.gpii\\.net/common/speechRate",
+                            "factor": 0.125,
+                            "offset": -12.125
+                        }
+                    }
+                }
+```
+
+And the user has the following preferences:
+
+```json
+"preferences": {
+    "http://registry.gpii.net/common/punctuationVerbosity": "all",
+    "http://registry.gpii.net/common/speechRate": 400
+}
+```
+
+What happens now is, if the application is being matched using common terms (again this is up to the matchmaker being used), the GPII will scan through all the `capabilitiesTransformations` and attempt to run the transform for each one if possible. There are lots of different transform functions, and each one will have slightly different values. TODO Link to transforms page.
+
+The key for each of these is the path to the value in the INI value that will be updated for the user.
+
+The first INI path, `cloud4allVoiceProfile-GlobalContext.Punctuation` has a transform of type `fluid.transforms.valueMapper`, and it's `inputPath` is the value of the common term `http://registry.gpii.net/common/punctuationVerbosity`. In this case, the users value for this is `all`, and in JAWS `all` is coded as 3 in the INI file.
+
+The second INI path, 'cloud4allVoiceProfile-GlobalContext.Speed'
 
 
 
