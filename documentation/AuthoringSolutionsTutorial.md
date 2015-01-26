@@ -222,10 +222,48 @@ What happens now is, if the application is being matched using common terms (aga
 
 The key for each of these is the path to the value in the INI value that will be updated for the user.
 
-The first INI path, `cloud4allVoiceProfile-GlobalContext.Punctuation` has a transform of type `fluid.transforms.valueMapper`, and it's `inputPath` is the value of the common term `http://registry.gpii.net/common/punctuationVerbosity`. In this case, the users value for this is `all`, and in JAWS `all` is coded as 3 in the INI file.
+The first INI path, `cloud4allVoiceProfile-GlobalContext.Punctuation` has a transform of type `fluid.transforms.valueMapper`, and it's `inputPath` is the value of the common term `http://registry.gpii.net/common/punctuationVerbosity`. The `valueMapper` transform maps values from a common term to another value for use in the solution. In this case, the users value for this is `all`, and in JAWS `all` is coded as 3 in the INI file.  
 
-The second INI path, 'cloud4allVoiceProfile-GlobalContext.Speed'
+The second INI path, `cloud4allVoiceProfile-GlobalContext.Speed` has a transform of type `fluid.transforms.linearScale`. This transform converts a value a user has for a common preference to the value a solution needs when the relationship follows that of a traditional linear scale ( `y = mx + b` ).  In this case we use the `valuePath` option to find out common term `speechRate` and convert it using as: `Speed = (0.125 * 400) - 12.125`.
 
+### The Lifecycle Manager
+
+The final piece of the document is the `lifecycleManager` section. This gives the GPII the specific order that operations should be performed in when the user logs in and out, which starts and stops our solution respectively. Similar to other parts of the document, there are plugins that can be used, specified by their `type` and given options that are specific to them. In addition, there are 2 special commands `setSettings` and `restoreSettings`. `setSettings` will cause the GPII to use all our instructions from the `settingsHandlers` section to change the JAWS INI file as we've specified. When it makes those changes, it will save the original settings that were in those files. Those original settings can be put back with the `restoreSettings` command.  In most situations you will want to set the settings when a user logs in, and restore them when a user logs out.
+
+```json
+        "lifecycleManager": {
+            "start": [
+                "setSettings",
+                {
+                    "type": "gpii.launch.exec",
+                    "command": "\"${{registry}.HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\JAWS15.exe\\}\""
+                }
+            ],
+            "stop": [
+                {
+                    "type": "gpii.launch.exec",
+                    "command": "${{environment}.SystemRoot}\\System32\\taskkill.exe /f /im jfw.exe"
+                },
+                "restoreSettings"
+            ]
+        }
+```
+
+The lifecycle manager accepts 2 arrays keyed by `start` and `stop`, which are invoked when the user logs in and out respectively.  Each array will run it's operation in the order specified in the array, as you may need operations to occur in a very specific order for your solution.
+
+In order to start JAWS, we first want to `setSettings`, so that the users needs and preferences are transformed and stored in the INI file JAWS reads from. After that we use the `gpii.launch.exec` plugin along with a `command` option that will run that executable on the system. Let's take a look at the string specifying the path of the executable.
+
+```json
+"command": "\"${{registry}.HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\JAWS15.exe\\}\""
+```
+
+Here we see another interesting example of string parameters that are available to use.  It so happens that with many windows applications, the actual path to the executable is stored in a stable registry key. This takes care of situations where users may have installed JAWS in a different directory. You can also find the path to it in the registry key at `HKEY_LOCAL_MACHINE -> SOFTWARE -> Microsoft -> Windows -> CurrentVersion -> App Paths -> JAWS15.exe`. In the above the `{registry}` inside the larger `${ }` parameter syntax says that the following will be a registry path. The registry path items are seperated by backslashes, which again need to be escaped in the JSON. Also, the entire string in this case is separated by quotes to take care of spaces in the path. TODO: Is that really why we have to put quotes around it??
+
+When we logout, again we execute a command, in this case called taskkill.exe which is a builtin windows utility to kill tasks and processes. We are instructing it to stop all JAWS processes.  To find taskkill.exe, we lookup the path using another environment variable on Windows called `SystemRoot`, similar to our `APPDATA` environment variable lookup from previously.  Once we've stopped JAWS, we restore the original settings that were on the system.
+
+### Conclusion
+
+That was a brief introduction to all the components needed to tell the GPII how to integrate your solution. Depending on your solution, the instructions and metadata you need to provide may be more or less complex. Using this as a starting place, you should be able to find more information in the specified references, or by asking on our development email list or IRC channel.
 
 
 ### The Finished Example
