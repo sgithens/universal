@@ -14,9 +14,7 @@
                 "options": {
                     "filename": "${{environment}.APPDATA}\\Freedom Scientific\\JAWS\\16.0\\Settings\\enu\\DEFAULT.JCF"
                 },
-                "capabilities": [
-                    "applications.com\\.freedomscientific\\.jaws.id"
-                ],
+                "capabilities": [],
                 "capabilitiesTransformations": {
                     "Voice Profiles\\.ActiveVoiceProfileName": {
                         "transform": {
@@ -151,8 +149,7 @@
                     "xml-tag": "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 },
                 "capabilities": [
-                    "applications.com\\.texthelp\\.readWriteGold.id",
-                    "languageAssistance"
+                    "http://registry\\.gpii\\.net/common/languageAssistance"
                 ],
                 "capabilitiesTransformations": {
                     "ApplicationSettings": "ApplicationSettings"
@@ -217,10 +214,7 @@
                         "ZoomIncrement": "REG_DWORD"
                     }
                 },
-                "capabilities": [
-                    "applications.com\\.microsoft\\.windows\\.magnifier.id",
-                    "display.screenEnhancement.screenMagnification.applications.com\\.microsoft\\.windows\\.magnifier.name"
-                ],
+                "capabilities": [],
                 "capabilitiesTransformations": {
                     "Invert": {
                         "transform": {
@@ -322,9 +316,7 @@
             "configure": {
                 "type": "gpii.settingsHandlers.noSettings",
                 "capabilities": [
-                    "control.onscreenKeyboard",
-                    "applications.com\\.microsoft\\.windows\\.onscreenKeyboard.id",
-                    "control.onscreenKeyboard.applications.com\\.microsoft\\.windows\\.onscreenKeyboard.name"
+                    "http://registry\\.gpii\\.net/common/onScreenKeyboardEnabled"
                 ]
             }
         },
@@ -365,10 +357,7 @@
                     "allowNumberSignComments": true,
                     "allowSubSections": true
                 },
-                "capabilities": [
-                    "applications.org\\.nvda-project.id",
-                    "display.screenReader.applications.org\\.nvda-project.name"
-                ],
+                "capabilities": [],
                 "capabilitiesTransformations": {
                     "speech\\.espeak\\.pitch": {
                         "transform": {
@@ -739,9 +728,7 @@
             "configure": {
                 "type": "gpii.settingsHandlers.noSettings",
                 "capabilities": [
-                    "content.simplification",
-                    "applications.trace\\.easyOne\\.communicator\\.windows.id",
-                    "content.simplification.applications.trace\\.easyOne\\.communicator\\.windows.name"
+                    "http://registry\\.gpii\\.net/common/simplification"
                 ]
             }
         },
@@ -778,9 +765,7 @@
             "configure": {
                 "type": "gpii.settingsHandlers.noSettings",
                 "capabilities": [
-                    "content.pictorialSimplification",
-                    "applications.trace\\.easyOne\\.sudan\\.windows.id",
-                    "content.pictorialSimplification.applications.trace\\.easyOne\\.sudan\\.windows.name"
+                    "http://registry\\.gpii\\.net/common/pictorialSimplification"
                 ]
             }
         },
@@ -817,9 +802,7 @@
             "configure": {
                 "type": "gpii.settingsHandlers.noSettings",
                 "capabilities": [
-                    "display.screenReader",
-                    "applications.webinsight\\.webAnywhere\\.windows.id",
-                    "display.screenReader.applications.webinsight\\.webAnywhere\\.windows.name"
+                    "http://registry\\.gpii\\.net/common/screenReaderTTSEnabled"
                 ]
             }
         },
@@ -860,8 +843,7 @@
                     "filename": "${{environment}.MAAVIS_HOME}\\MaavisMedia\\Users\\Default\\userconfig.json"
                 },
                 "capabilities": [
-                    "applications.net\\.opendirective\\.maavis.id",
-                    "display.textReadingHighlight.-provisional-selfVoicingEnabled"
+                    "http://registry\\.gpii\\.net/common/selfVoicingEnabled"
                 ],
                 "capabilitiesTransformations": {
                     "transform": [
@@ -999,8 +981,7 @@
                     "verifySettings": true
                 },
                 "capabilities": [
-                    "display.screenEnhancement.-provisional-highContrastEnabled",
-                    "applications.com\\.microsoft\\.windows\\.highContrast.id"
+                    "http://registry\\.gpii\\.net/common/highContrastEnabled"
                 ],
                 "capabilitiesTransformations": {
                     "HighContrastOn": {
@@ -1055,8 +1036,7 @@
                     "verifySettings": true
                 },
                 "capabilities": [
-                    "display.screenEnhancement.mouseTrailing",
-                    "applications.com\\.microsoft\\.windows\\.mouseTrailing.id"
+                    "http://registry\\.gpii\\.net/common/mouseTrailing"
                 ],
                 "capabilitiesTransformations": {
                     "MouseTrails": {
@@ -1125,8 +1105,7 @@
                     "verifySettings": true
                 },
                 "capabilities": [
-                    "display.screenEnhancement.cursorSize",
-                    "applications.com\\.microsoft\\.windows\\.cursors.id"
+                    "http://registry\\.gpii\\.net/common/cursorSize"
                 ],
                 "capabilitiesTransformations": {
                     "Arrow": {
@@ -1394,9 +1373,7 @@
                     "encoding": "utf-8",
                     "xml-tag": "<?xml version=\"1.0\"?>"
                 },
-                "capabilities": [
-                    "applications.eu\\.singularlogic\\.pixelsense\\.sociable.id"
-                ],
+                "capabilities": [],
                 "capabilitiesTransformations": {
                     "user.$t": {
                         "literalValue": 1
@@ -1464,9 +1441,7 @@
                 "options": {
                     "path": "com.ilunion.cloud4chrome"
                 },
-                "capabilities": [
-                    "applications.com\\.ilunion\\.cloud4chrome.id"
-                ],
+                "capabilities": [],
                 "capabilitiesTransformations": {
                     "screenReaderTTSEnabled": "http://registry\\.gpii\\.net/common/screenReaderTTSEnabled",
                     "fontSize": {

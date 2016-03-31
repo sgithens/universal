@@ -34,6 +34,7 @@ require("./gpii/node_modules/rawPreferencesServer");
 require("./gpii/node_modules/ontologyHandler");
 require("./gpii/node_modules/matchMakerFramework");
 require("./gpii/node_modules/flatMatchMaker");
+require("./gpii/node_modules/canopyMatchMaker");
 require("./gpii/node_modules/contextManager");
 
 gpii.loadTestingSupport = function () {
@@ -41,9 +42,9 @@ gpii.loadTestingSupport = function () {
 };
 
 gpii.start = function () {
-    kettle.config.makeConfigLoader({
+    kettle.config.loadConfig({
         configName: kettle.config.getNodeEnv("development.all.local"),
-        configPath: kettle.config.getConfigPath() || __dirname + "/gpii/configs"
+        configPath: kettle.config.getConfigPath(__dirname + "/gpii/configs")
     });
 };
 
