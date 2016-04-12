@@ -1,8 +1,24 @@
 [
     {
-        "id": "com.freedomscientific.jaws"
+        "id": "com.microsoft.windows.displaySettings"
     },
     
+    {
+        "id": "trace.easyOne.communicator.windows"
+    },
+
+    {
+        "id": "org.nvda-project"
+    },
+
+    {
+        "id": "com.texthelp.readWriteGold"
+    },
+
+    {
+        "id": "com.freedomscientific.jaws"
+    },
+
     {
         "id": "org.gnome.desktop.interface"
     },

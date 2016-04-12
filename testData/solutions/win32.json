@@ -1,4 +1,41 @@
 {
+    "com.microsoft.windows.displaySettings": {
+        "name": "Windows Display Settings",
+        "contexts": {
+            "OS": [
+                {
+                    "id": "win32",
+                    "version": ">=5.0"
+                }
+            ]
+        },
+        "settingsHandlers": {
+            "configure": {
+                "type": "gpii.settingsHandlers.noSettings",
+                "capabilities": [
+                    "applications.com\\.microsoft\\.windows\\.displaySettings.id"
+                ]
+            }
+        },
+        "start": [
+            {
+                "type": "gpii.launch.exec",
+                "command": "for /f \"usebackq tokens=2,3\" %i in (`\"%CD%\\lgsbin\\winsetres.exe\"`) do echo ^\"^%CD^%\\lgsbin\\winsetres.exe^\" %i %j > \"%TEMP%\\gpiidispsetres.bat\" & \"%CD%\\lgsbin\\winsetres.exe\" 1280 720"
+            }
+        ],
+        "stop": [
+            {
+                "type": "gpii.launch.exec",
+                "command": "\"%TEMP%\\gpiidispsetres.bat\""
+            }
+        ],
+        "isInstalled": [
+            {
+                "type": "gpii.deviceReporter.alwaysInstalled"
+            }
+        ]
+    },
+
     "com.freedomscientific.jaws": {
         "name": "JAWS",
         "contexts": {
@@ -144,7 +181,7 @@
             "configuration": {
                 "type": "gpii.settingsHandlers.XMLHandler",
                 "options": {
-                    "filename": "${{environment}.APPDATA}\\Texthelp Systems\\ReadAndWrite\\10\\RWSettings10.xml",
+                    "filename": "${{environment}.APPDATA}\\Texthelp\\ReadAndWrite\\11\\RWSettings11.xml",
                     "encoding": "utf-8",
                     "xml-tag": "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 },
@@ -168,7 +205,7 @@
                 "command": "echo 'kill' > ${{environment}.TEMP}\\RW8Updates.dat"
             }, {
                 "type": "gpii.launch.exec",
-                "command": "\"${{registry}.HKEY_CURRENT_USER\\Software\\Texthelp\\Read&Write10\\InstallPath}\\ReadAndWrite.exe\""
+                "command": "\"${{registry}.HKEY_CURRENT_USER\\Software\\Texthelp\\Read&Write11\\InstallPath}\\ReadAndWrite.exe\""
             }
         ],
         "stop": [
@@ -181,7 +218,7 @@
             {
                 "type": "gpii.deviceReporter.registryKeyExists",
                 "hKey": "HKEY_CURRENT_USER",
-                "path": "Software\\Texthelp\\Read&Write10\\InstallPath",
+                "path": "Software\\Texthelp\\Read&Write11\\InstallPath",
                 "subPath": "ReadAndWrite.exe",
                 "dataType": "REG_SZ"
             }
