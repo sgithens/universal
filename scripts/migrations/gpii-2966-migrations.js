@@ -3,20 +3,20 @@
 var fluid = require("infusion");
 
 var gpii = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.migrations.migrationGPII2966");
+gpii.migrations.migrationGPII2966 = fluid.registerNamespace("gpii.migrations.migrationGPII2966");
 
 require("../../gpii/node_modules/gpii-migrations/index.js");
 
 fluid.defaults("gpii.migrations.migrationGPII2966", {
     gradeNames: ["gpii.migrations.couchDBmigration"],
+    testFixtureData: gpii.migrations.migrationGPII2966.fixtureData,
     mangoQuery: {
         "selector": {
             "schemaVersion": {
                 "$eq": "0.1"
             },
             "type": "prefsSafe"
-        },
-        limit: 1000
+        }
     },
     invokers: {
         "processDocument": {
