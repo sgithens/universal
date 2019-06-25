@@ -19,9 +19,11 @@ gpii.loadTestingSupport();
 require("./migrations/gpii-2966-migrations.js");
 require("./migrations/gpii-3717-migrations.js");
 
-fluid.test.runTests([
-    gpii.migrations.utils.createBeforeAfterTests(gpii.migrations.migrationGPII2966()),
-    gpii.migrations.utils.createBeforeAfterTests(gpii.migrations.migrationGPII2966part2()),
-    gpii.migrations.utils.createBeforeAfterTests(gpii.migrations.migrationGPII3717()),
-    gpii.migrations.utils.createBeforeAfterTests(gpii.migrations.migrationGPII3717part2())
-]);
+fluid.each([
+    gpii.migrations.migrationGPII2966(),
+    gpii.migrations.migrationGPII2966part2(),
+    gpii.migrations.migrationGPII3717(),
+    gpii.migrations.migrationGPII3717part2()
+], function (item) {
+    fluid.promise.fireTransformEvent(item.events.continueMigration);
+});
