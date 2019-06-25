@@ -1,0 +1,112 @@
+[
+    {
+        "_id": "prefsSafe-1",
+        "type": "prefsSafe",
+        "schemaVersion": "0.2",
+        "prefsSafeType": "user",
+        "name": null,
+        "email": null,
+        "password": null,
+        "preferences": {},
+        "timestampCreated": "2017-12-14T19:55:11.640Z",
+        "timestampUpdated": null
+    },
+    {
+        "_id": "prefsSafe-2",
+        "type": "prefsSafe",
+        "schemaVersion": "0.2",
+        "prefsSafeType": "user",
+        "name": null,
+        "email": null,
+        "password": null,
+        "preferences": {},
+        "timestampCreated": "2017-12-14T19:55:11.640Z",
+        "timestampUpdated": null
+    },
+    {
+        "_id": "prefsSafe-3",
+        "type": "prefsSafe",
+        "schemaVersion": "0.2",
+        "prefsSafeType": "user",
+        "name": null,
+        "email": null,
+        "password": null,
+        "preferences": {},
+        "timestampCreated": "2017-12-14T19:55:11.640Z",
+        "timestampUpdated": null
+    },
+    {
+        "_id": "prefsSafe-4",
+        "type": "prefsSafe",
+        "schemaVersion": "0.2",
+        "prefsSafeType": "user",
+        "name": null,
+        "email": null,
+        "password": null,
+        "preferences": {},
+        "timestampCreated": "2017-12-14T19:55:11.640Z",
+        "timestampUpdated": null
+    },
+    {
+        "_id": "prefsSafe-5",
+        "type": "prefsSafe",
+        "schemaVersion": "0.2",
+        "prefsSafeType": "user",
+        "name": null,
+        "email": null,
+        "password": null,
+        "preferences": {},
+        "timestampCreated": "2017-12-14T19:55:11.640Z",
+        "timestampUpdated": null
+    },
+    {
+        "_id": "alice_gpii_key",
+        "type": "gpiiKey",
+        "schemaVersion": "0.2",
+        "prefsSafeId": "prefsSafe-1",
+        "prefsSetId": "gpii-default",
+        "revoked": false,
+        "revokedReason": null,
+        "timestampCreated": "2017-11-21T18:11:22.101Z",
+        "timestampUpdated": null
+    },
+    {
+        "_id": "bob_gpii_key",
+        "type": "gpiiKey",
+        "schemaVersion": "0.2",
+        "prefsSafeId": "prefsSafe-2",
+        "prefsSetId": "gpii-default",
+        "revoked": false,
+        "revokedReason": null,
+        "timestampCreated": "2017-11-21T18:11:22.101Z",
+        "timestampUpdated": null
+    },
+    {
+        "_id": "clientCredential-1",
+        "type": "clientCredential",
+        "schemaVersion": "0.1",
+        "clientId": "gpiiAppInstallationClient-1",
+        "oauth2ClientId": "pilot-computer",
+        "oauth2ClientSecret": "pilot-computer-secret",
+        "revoked": false,
+        "revokedReason": null,
+        "timestampCreated": "2017-11-21T18:11:22.101Z",
+        "timestampRevoked": null
+    },
+    {
+        "_id": "clientCredential-2",
+        "type": "clientCredential",
+        "schemaVersion": "0.2",
+        "clientId": "gpiiAppInstallationClient-1",
+        "oauth2ClientId": "pilot-computer-another",
+        "oauth2ClientSecret": "pilot-computer-secret-another",
+        "revoked": true,
+        "revokedReason": "Security breach",
+        "timestampCreated": "2018-11-21T18:11:25.101Z",
+        "timestampRevoked": "2018-12-21T18:11:25.101Z",
+        "allowedIPBlocks": null,
+        "allowedPrefsToWrite": null,
+        "isCreateGpiiKeyAllowed": false,
+        "isCreatePrefsSafeAllowed": false
+    }
+]
