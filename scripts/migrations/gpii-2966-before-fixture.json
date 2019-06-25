@@ -2,7 +2,7 @@
     {
         "_id": "prefsSafe-1",
         "type": "prefsSafe",
-        "schemaVersion": "0.1",
+        "schemaVersion": "0.2",
         "prefsSafeType": "user",
         "name": null,
         "email": null,
@@ -14,7 +14,7 @@
     {
         "_id": "prefsSafe-2",
         "type": "prefsSafe",
-        "schemaVersion": "0.1",
+        "schemaVersion": "0.2",
         "prefsSafeType": "user",
         "name": null,
         "email": null,
@@ -26,7 +26,7 @@
     {
         "_id": "prefsSafe-3",
         "type": "prefsSafe",
-        "schemaVersion": "0.1",
+        "schemaVersion": "0.2",
         "prefsSafeType": "user",
         "name": null,
         "email": null,
@@ -38,7 +38,7 @@
     {
         "_id": "prefsSafe-4",
         "type": "prefsSafe",
-        "schemaVersion": "0.1",
+        "schemaVersion": "0.2",
         "prefsSafeType": "user",
         "name": null,
         "email": null,
@@ -73,7 +73,7 @@
     {
         "_id": "bob_gpii_key",
         "type": "gpiiKey",
-        "schemaVersion": "0.1",
+        "schemaVersion": "0.2",
         "prefsSafeId": "prefsSafe-2",
         "prefsSetId": "gpii-default",
         "revoked": false,
