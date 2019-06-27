@@ -39,4 +39,4 @@ of type `clientCredential` it adds four new fields with the following defaults:
 - Git Commit: 9bd021f95b3fe64a6a9d1fdcd18b8e8044007187
 
 Previously throughout the project, and prior to production usage and datastores, the `schemaVersion`
-field was kept at 1.0 for all changes and modifications.
+field was kept at 0.1 for all changes and modifications.
