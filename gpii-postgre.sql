@@ -17,14 +17,33 @@ create table all_docs (
     docb jsonb NOT NULL
 );
 
+/* Exploratory Queries */
+select
+	docb -> '_id'
+from
+	all_docs;
+
+select
+	docb -> 'timestampCreated',
+	docb
+from
+	all_docs
+where
+	docb ->> 'type' = 'prefsSafe';
+
+select distinct(type), count(type)
+from all_docs
+group by type;
+
 /* "views": { */
 
 /* We should make some indexes */
-create index gpiiKeyPrefsSetId on all_docs (docb->'prefsSafeId');
-create index oauth2ClientClientId on all_docs (docb->'clientId');
-create index oauth2ClientRevoked on all_docs (docb->'revoked');
+create index gpiiKeyPrefsSetId on all_docs ((docb -> 'prefsSafeId'));
+create index oauth2ClientClientId on all_docs ((docb -> 'clientId'));
+create index oauth2ClientRevoked on all_docs ((docb -> 'revoked'));
+
 /* incase we want to look up anything by it's jsonb doc instead of the one I'm putting in doc_id on import */
-create index prefsSafe_id on all_docs (docb->'_id')
+create index prefsSafe_id on all_docs ((docb -> '_id'));
 
 /* Apparently there is a thing called a "GIN" index which will automatically index all the
  * columns/properties in a jsonb field?!?!? craZ
@@ -48,15 +67,24 @@ CREATE INDEX idx_all_docs_docb ON all_docs USING GIN (docb);
 */
 /* Inner join the all_docs table on itself */
 select
-    prefsSafe.docb
+	prefsSafe.doc_id prefsSafeId,
+	gpiiKey.doc_id gpiiKeyId,
+	prefsSafe.docb
 from
     all_docs prefsSafe
 inner join
-    all_docs gpiiKey on gpiiKey.docb->'prefsSafeId' = prefsSafe.doc_id
+    all_docs gpiiKey ON gpiiKey .docb ->> 'prefsSafeId' = prefsSafe.doc_id;
+
+select
+	prefsSafe.doc_id prefsSafeId,
+	gpiiKey.doc_id gpiiKeyId,
+	prefsSafe.docb
+from
+    all_docs prefsSafe
+inner join
+    all_docs gpiiKey ON gpiiKey .docb ->> 'prefsSafeId' = prefsSafe.doc_id
 where
-    gpiiKey.doc_id = $1
-values ($1);
-    /* or... all_docs gpiiKey on gpiiKey.docb->'prefsSafeId' = prefsSafe.docb->'_id' */
+	gpiiKey.doc_id = 'alice';
 
 /*
     "findClientByOauth2ClientId": {
@@ -71,14 +99,15 @@ values ($1);
         }"
     },
 */
-select *
+select
+	docb -> 'clientId' clientId,
+	docb -> 'oauth2ClientId' oauth2ClientId,
+	docb
 from
-    all_docs oauth2Client
+	all_docs
 where
-    oauth2Client.type = 'clientCredential',
-    oauth2Client.docb.revoked = false,
-    oauth2Client.docb.clientId = $1
-values ($1);
+	type = 'clientCredential' and
+	docb ->> 'clientId' = 'gpiiAppInstallationClient-1';
 
 /*
     "findInfoByAccessToken": {
@@ -109,7 +138,9 @@ values ($1);
 
 /*
  * Second approach. Just create regular tables, one for each of our existing `doc.type`s.
- List is from DbConst.js `gpii.dbOperation.docTypes`
+ * json-ic aspects of our data will still be jsonb entries in the tables.
+ *
+ * List is from DbConst.js `gpii.dbOperation.docTypes`
  */
 
 create table gpiiKey (
