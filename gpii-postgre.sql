@@ -121,16 +121,59 @@ where
             }"
     },
 */
+select
+	docb -> 'accessToken' accessToken,
+	docb
+from
+	all_docs
+where
+	type = 'gpiiAppInstallationAuthorization' and
+	docb ->> 'revoked' = 'false' and
+	docb ->> 'clientCredentialId' = 'clientCredential-1';
 
+/*
     "findSnapsetPrefsSafes": {
-        "map": "function(doc) {if (doc.type === 'prefsSafe' && doc.prefsSafeType === 'snapset') { emit(doc._id, doc); }}"
+        "map": "function(doc) {
+            if (doc.type === 'prefsSafe' && doc.prefsSafeType === 'snapset')
+            { emit(doc._id, doc); }}"
     },
+*/
+select
+	docb -> 'prefsSafeType' prefsSafeType,
+	doc_id,
+	docb
+from
+	all_docs
+where
+	type = 'prefsSafe' and
+	docb ->> 'prefsSafeType' = 'snapset';
+
+/*
     "findAllGpiiKeys": {
-        "map": "function(doc) {if (doc.type === 'gpiiKey') { emit(doc._id, doc); }}"
+        "map": "function(doc) {
+            if (doc.type === 'gpiiKey') {
+                emit(doc._id, doc);
+            }
+        }"
     },
+*/
+select
+	doc_id,
+	docb
+from
+	all_docs
+where
+	type = 'gpiiKey';
+
+/*
     "findAccessTokenByExpires": {
-        "map": "function(doc) {if (doc.type === 'gpiiAppInstallationAuthorization') emit(Date.parse(doc.timestampExpires), doc); }"
+        "map": "function(doc) {
+            if (doc.type === 'gpiiAppInstallationAuthorization')
+                emit(Date.parse(doc.timestampExpires), doc);
+        }"
     },
+*/
+
     "findDocsBySchemaVersion": {
         "map": "function(doc) {emit(doc.schemaVersion, doc); }"
     }
