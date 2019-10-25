@@ -9,13 +9,6 @@
  */
 
 /* NOTE: Trying out indexes, features, and performance of both json and jsonb types */
-create table all_docs (
-	ID serial NOT NULL PRIMARY KEY,
-	doc_id VARCHAR (255) UNIQUE NOT NULL,
-	type VARCHAR (255) NOT NULL,
-	doc json NOT NULL,
-    docb jsonb NOT NULL
-);
 
 /* Exploratory Queries */
 select
@@ -173,11 +166,25 @@ where
         }"
     },
 */
+select
+	to_timestamp( docb ->> 'timestampExpires', 'YYYY-MM-DDTHH:MI:SS.MSZ' ) timestampExpires,
+	doc
+from
+	all_docs
+where
+	type = 'gpiiAppInstallationAuthorization';
 
+/*
     "findDocsBySchemaVersion": {
         "map": "function(doc) {emit(doc.schemaVersion, doc); }"
     }
-}
+*/
+select
+	docb ->> 'schemaVersion' schemaVersion,
+	docb doc
+from
+	all_docs;
+
 
 /*
  * Second approach. Just create regular tables, one for each of our existing `doc.type`s.
@@ -185,23 +192,71 @@ where
  *
  * List is from DbConst.js `gpii.dbOperation.docTypes`
  */
-
-create table gpiiKey (
-
+create table all_docs (
+	ID serial NOT NULL PRIMARY KEY,
+	doc_id VARCHAR (255) UNIQUE NOT NULL,
+	type VARCHAR (255) NOT NULL,
+    docb jsonb NOT NULL
 );
 
 create table prefsSafe (
+    ID serial NOT NULL PRIMARY KEY,
+    prefsSafeId VARCHAR (255) NOT NULL UNIQUE,
+    prefsSafeType VARCHAR (255) NOT NULL DEFAULT 'snapset',
+    schemaVersion VARCHAR (255) NOT NULL,
+    name VARCHAR (255),
+    email VARCHAR (255),
+    preferences JSONB NOT NULL,
+    timestampCreated TIMESTAMPTZ NOT NULL,
+    timestampUpdated TIMESTAMPTZ
+);
 
+create table gpiiKey (
+    ID serial NOT NULL PRIMARY KEY,
+    prefsSafeId VARCHAR (255) NOT NULL REFERENCES prefsSafe(prefsSafeId),
+    prefsSetId VARCHAR (255) NOT NULL,
+    revoked BOOLEAN NOT NULL DEFAULT FALSE,
+    revokedReason VARCHAR(255) NOT NULL DEFAULT '',
+    timestampCreated TIMESTAMPTZ NOT NULL,
+    timestampUpdated TIMESTAMPTZ
 );
 
 create table clientCredential (
-
+    ID serial NOT NULL PRIMARY KEY,
+    clientId VARCHAR (255) NOT NULL,
+    oauth2ClientId VARCHAR (255) NOT NULL,
+    oauth2ClientSecret VARCHAR (255) NOT NULL,
+    allowedIPBlocks JSONB,
+    allowedPrefsToWrite JSONB,
+    isCreateGpiiKeyAllowed BOOLEAN NOT NULL DEFAULT FALSE,
+    isCreatePrefsSafeAllowed BOOLEAN NOT NULL DEFAULT FALSE,
+    revoked BOOLEAN NOT NULL DEFAULT FALSE,
+    revokedReason VARCHAR (255) NOT NULL DEFAULT '',
+    timestampCreated TIMESTAMPTZ NOT NULL,
+    timestampRevoked TIMESTAMPTZ
 );
 
 create table gpiiAppInstallationClient (
-
+    ID serial NOT NULL PRIMARY KEY,
+    gpiiKey INTEGER REFERENCES gpiiKey(id),
+    clientId INTEGER REFERENCES clientCredential(id),
+    accessToken VARCHAR (255) NOT NULL,
+    revoked BOOLEAN NOT NULL DEFAULT FALSE,
+    revokedReason VARCHAR (255) NOT NULL DEFAULT '',
+    timestampCreated TIMESTAMPTZ NOT NULL,
+    timestampRevoked TIMESTAMPTZ,
+    timestampExpires TIMESTAMPTZ NOT NULL
 );
 
 create table gpiiAppInstallationAuthorization (
-
+    ID serial NOT NULL PRIMARY KEY,
+    clientId INTEGER REFERENCES gpiiAppInstallationClient(id),
+    gpiiKey INTEGER REFERENCES gpiiKey(id),
+    clientCredentialId INTEGER REFERENCES clientCredential(id),
+    accessToken VARCHAR (255) NOT NULL,
+    revoked BOOLEAN NOT NULL DEFAULT FALSE,
+    revokedReason VARCHAR (255) NOT NULL DEFAULT '',
+    timestampCreated TIMESTAMPTZ NOT NULL,
+    timestampRevoked TIMESTAMPTZ,
+    timestampExpires TIMESTAMPTZ NOT NULL
 );
