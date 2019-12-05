@@ -425,9 +425,13 @@ gpii.tests.windows.builtIn = [
                                 "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
                                 "value": true
                             },
+                            "SlowKeysInterval": {
+                                "path": "pvParam.iWaitMSec",
+                                "value": 20
+                            },
                             "BounceKeysInterval": {
                                 "path": "pvParam.iBounceMSec",
-                                "value": 1000
+                                "value": 1007
                             }
                         },
                         "options": {
@@ -835,7 +839,8 @@ gpii.tests.windows.builtIn = [
             }
         },
         gradeNames: "gpii.test.integration.actionHandlersAware.windows"
-    }, {
+    },
+    {
         name: "Testing os_win_2 using default matchmaker",
         gpiiKey: "os_win_2",
         initialState: {},
@@ -875,676 +880,680 @@ gpii.tests.windows.builtIn = [
                 }]
             }
         }
-    }, {
-        name: "Testing os_common using default matchmaker",
-        gpiiKey: "os_common",
-        initialState: {
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": false
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": false
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        },
-        settingsHandlers: {
-            "gpii.windows.spiSettingsHandler": {
-                "com.microsoft.windows.mouseTrailing": [
-                    {
-                        "settings": {
-                            "MouseTrails": {
-                                "path": {
-                                    "get": "pvParam",
-                                    "set": "uiParam"
-                                },
-                                "value": 10
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETMOUSETRAILS",
-                            "setAction": "SPI_SETMOUSETRAILS",
-                            "uiParam": 0,
-                            "pvParam": {
-                                "type": "BOOL"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.mouseKeys": [
-                    {
-                        "settings": {
-                            "MouseKeysOn": {
-                                "path": "pvParam.dwFlags.MKF_MOUSEKEYSON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETMOUSEKEYS",
-                            "setAction": "SPI_SETMOUSEKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "MOUSEKEYS"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.stickyKeys": [
-                    {
-                        "settings": {
-                            "StickyKeysOn": {
-                                "path": "pvParam.dwFlags.SKF_STICKYKEYSON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETSTICKYKEYS",
-                            "setAction": "SPI_SETSTICKYKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "STICKYKEYS"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.filterKeys": [
-                    {
-                        "settings": {
-                            "FilterKeysEnable": {
-                                "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
-                                "value": false
-                            },
-                            "BounceKeysInterval": {
-                                "path": "pvParam.iBounceMSec",
-                                "value": 0
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETFILTERKEYS",
-                            "setAction": "SPI_SETFILTERKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "FILTERKEYS"
-                            }
-                        }
-                    }
-                ]
-            },
-            "gpii.windows.registrySettingsHandler": {
-                "com.microsoft.windows.magnifier": [{ // magnifier stuff
-                    "settings": {
-                        "Invert": 1,
-                        "Magnification": 150,
-                        "MagnificationMode": 3,
-                        "FollowFocus": 0,
-                        "FollowCaret": 1,
-                        "FollowMouse": 1
-                    },
-                    "options": {
-                        "hKey": "HKEY_CURRENT_USER",
-                        "path": "Software\\Microsoft\\ScreenMagnifier",
-                        "dataTypes": {
-                            "Magnification": "REG_DWORD",
-                            "Invert": "REG_DWORD",
-                            "FollowFocus": "REG_DWORD",
-                            "FollowCaret": "REG_DWORD",
-                            "FollowMouse": "REG_DWORD",
-                            "MagnificationMode": "REG_DWORD"
-                        }
-                    }
-                }],
-                "com.microsoft.windows.cursors": [{ // cursor size stuff
-                    "settings": {
-                        "No": "%SystemRoot%\\cursors\\no_l.cur",
-                        "Hand": "",
-                        "Help": "%SystemRoot%\\cursors\\help_l.cur",
-                        "Wait": "%SystemRoot%\\cursors\\busy_l.cur",
-                        "Arrow": "%SystemRoot%\\cursors\\arrow_l.cur",
-                        "NWPen": "%SystemRoot%\\cursors\\pen_l.cur",
-                        "SizeNS": "%SystemRoot%\\cursors\\size4_l.cur",
-                        "SizeWE": "%SystemRoot%\\cursors\\size3_l.cur",
-                        "SizeAll": "%SystemRoot%\\cursors\\move_l.cur",
-                        "UpArrow": "%SystemRoot%\\cursors\\up_l.cur",
-                        "SizeNESW": "%SystemRoot%\\cursors\\size1_l.cur",
-                        "SizeNWSE": "%SystemRoot%\\cursors\\size2_l.cur",
-                        "AppStarting": "%SystemRoot%\\cursors\\wait_l.cur"
-                    },
-                    "options": {
-                        "hKey": "HKEY_CURRENT_USER",
-                        "path": "Control Panel\\Cursors",
-                        "dataTypes": {
-                            "Arrow": "REG_SZ",
-                            "Hand": "REG_SZ",
-                            "Help": "REG_SZ",
-                            "AppStarting": "REG_SZ",
-                            "No": "REG_SZ",
-                            "NWPen": "REG_SZ",
-                            "SizeAll": "REG_SZ",
-                            "SizeNESW": "REG_SZ",
-                            "SizeNS": "REG_SZ",
-                            "SizeNWSE": "REG_SZ",
-                            "SizeWE": "REG_SZ",
-                            "UpArrow": "REG_SZ",
-                            "Wait": "REG_SZ"
-                        }
-                    }
-                }]
-            },
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        }
-    }, {
-        name: "Testing os_common - magnifier running on startup",
-        gpiiKey: "os_common",
-        initialState: {
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": false
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        },
-        settingsHandlers: {
-            "gpii.windows.spiSettingsHandler": {
-                "com.microsoft.windows.mouseTrailing": [
-                    {
-                        "settings": {
-                            "MouseTrails": {
-                                "path": {
-                                    "get": "pvParam",
-                                    "set": "uiParam"
-                                },
-                                "value": 10
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETMOUSETRAILS",
-                            "setAction": "SPI_SETMOUSETRAILS",
-                            "uiParam": 0,
-                            "pvParam": {
-                                "type": "BOOL"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.mouseKeys": [
-                    {
-                        "settings": {
-                            "MouseKeysOn": {
-                                "path": "pvParam.dwFlags.MKF_MOUSEKEYSON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETMOUSEKEYS",
-                            "setAction": "SPI_SETMOUSEKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "MOUSEKEYS"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.stickyKeys": [
-                    {
-                        "settings": {
-                            "StickyKeysOn": {
-                                "path": "pvParam.dwFlags.SKF_STICKYKEYSON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETSTICKYKEYS",
-                            "setAction": "SPI_SETSTICKYKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "STICKYKEYS"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.filterKeys": [
-                    {
-                        "settings": {
-                            "FilterKeysEnable": {
-                                "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
-                                "value": false
-                            },
-                            "BounceKeysInterval": {
-                                "path": "pvParam.iBounceMSec",
-                                "value": 0
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETFILTERKEYS",
-                            "setAction": "SPI_SETFILTERKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "FILTERKEYS"
-                            }
-                        }
-                    }
-                ]
-            },
-            "gpii.windows.registrySettingsHandler": {
-                "com.microsoft.windows.magnifier": [{ // magnifier stuff
-                    "settings": {
-                        "Invert": 1,
-                        "Magnification": 150,
-                        "MagnificationMode": 3,
-                        "FollowFocus": 0,
-                        "FollowCaret": 1,
-                        "FollowMouse": 1
-                    },
-                    "options": {
-                        "hKey": "HKEY_CURRENT_USER",
-                        "path": "Software\\Microsoft\\ScreenMagnifier",
-                        "dataTypes": {
-                            "Magnification": "REG_DWORD",
-                            "Invert": "REG_DWORD",
-                            "FollowFocus": "REG_DWORD",
-                            "FollowCaret": "REG_DWORD",
-                            "FollowMouse": "REG_DWORD",
-                            "MagnificationMode": "REG_DWORD"
-                        }
-                    }
-                }],
-                "com.microsoft.windows.cursors": [{ // cursor size stuff
-                    "settings": {
-                        "No": "%SystemRoot%\\cursors\\no_l.cur",
-                        "Hand": "",
-                        "Help": "%SystemRoot%\\cursors\\help_l.cur",
-                        "Wait": "%SystemRoot%\\cursors\\busy_l.cur",
-                        "Arrow": "%SystemRoot%\\cursors\\arrow_l.cur",
-                        "NWPen": "%SystemRoot%\\cursors\\pen_l.cur",
-                        "SizeNS": "%SystemRoot%\\cursors\\size4_l.cur",
-                        "SizeWE": "%SystemRoot%\\cursors\\size3_l.cur",
-                        "SizeAll": "%SystemRoot%\\cursors\\move_l.cur",
-                        "UpArrow": "%SystemRoot%\\cursors\\up_l.cur",
-                        "SizeNESW": "%SystemRoot%\\cursors\\size1_l.cur",
-                        "SizeNWSE": "%SystemRoot%\\cursors\\size2_l.cur",
-                        "AppStarting": "%SystemRoot%\\cursors\\wait_l.cur"
-                    },
-                    "options": {
-                        "hKey": "HKEY_CURRENT_USER",
-                        "path": "Control Panel\\Cursors",
-                        "dataTypes": {
-                            "Arrow": "REG_SZ",
-                            "Hand": "REG_SZ",
-                            "Help": "REG_SZ",
-                            "AppStarting": "REG_SZ",
-                            "No": "REG_SZ",
-                            "NWPen": "REG_SZ",
-                            "SizeAll": "REG_SZ",
-                            "SizeNESW": "REG_SZ",
-                            "SizeNS": "REG_SZ",
-                            "SizeNWSE": "REG_SZ",
-                            "SizeWE": "REG_SZ",
-                            "UpArrow": "REG_SZ",
-                            "Wait": "REG_SZ"
-                        }
-                    }
-                }]
-            },
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        }
-    }, {
-        name: "Testing os_common - magnifier and keyboard both running on startup",
-        gpiiKey: "os_common",
-        initialState: {
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        },
-        settingsHandlers: {
-            "gpii.windows.spiSettingsHandler": {
-                "com.microsoft.windows.mouseTrailing": [
-                    {
-                        "settings": {
-                            "MouseTrails": {
-                                "path": {
-                                    "get": "pvParam",
-                                    "set": "uiParam"
-                                },
-                                "value": 10
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETMOUSETRAILS",
-                            "setAction": "SPI_SETMOUSETRAILS",
-                            "uiParam": 0,
-                            "pvParam": {
-                                "type": "BOOL"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.mouseKeys": [
-                    {
-                        "settings": {
-                            "MouseKeysOn": {
-                                "path": "pvParam.dwFlags.MKF_MOUSEKEYSON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETMOUSEKEYS",
-                            "setAction": "SPI_SETMOUSEKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "MOUSEKEYS"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.stickyKeys": [
-                    {
-                        "settings": {
-                            "StickyKeysOn": {
-                                "path": "pvParam.dwFlags.SKF_STICKYKEYSON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETSTICKYKEYS",
-                            "setAction": "SPI_SETSTICKYKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "STICKYKEYS"
-                            }
-                        }
-                    }
-                ],
-                "com.microsoft.windows.filterKeys": [
-                    {
-                        "settings": {
-                            "FilterKeysEnable": {
-                                "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
-                                "value": false
-                            },
-                            "BounceKeysInterval": {
-                                "path": "pvParam.iBounceMSec",
-                                "value": 0
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETFILTERKEYS",
-                            "setAction": "SPI_SETFILTERKEYS",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "FILTERKEYS"
-                            }
-                        }
-                    }
-                ]
-            },
-            "gpii.windows.registrySettingsHandler": {
-                "com.microsoft.windows.magnifier": [{ // magnifier stuff
-                    "settings": {
-                        "Invert": 1,
-                        "Magnification": 150,
-                        "MagnificationMode": 3,
-                        "FollowFocus": 0,
-                        "FollowCaret": 1,
-                        "FollowMouse": 1
-                    },
-                    "options": {
-                        "hKey": "HKEY_CURRENT_USER",
-                        "path": "Software\\Microsoft\\ScreenMagnifier",
-                        "dataTypes": {
-                            "Magnification": "REG_DWORD",
-                            "Invert": "REG_DWORD",
-                            "FollowFocus": "REG_DWORD",
-                            "FollowCaret": "REG_DWORD",
-                            "FollowMouse": "REG_DWORD",
-                            "MagnificationMode": "REG_DWORD"
-                        }
-                    }
-                }],
-                "com.microsoft.windows.cursors": [{ // cursor size stuff
-                    "settings": {
-                        "No": "%SystemRoot%\\cursors\\no_l.cur",
-                        "Hand": "",
-                        "Help": "%SystemRoot%\\cursors\\help_l.cur",
-                        "Wait": "%SystemRoot%\\cursors\\busy_l.cur",
-                        "Arrow": "%SystemRoot%\\cursors\\arrow_l.cur",
-                        "NWPen": "%SystemRoot%\\cursors\\pen_l.cur",
-                        "SizeNS": "%SystemRoot%\\cursors\\size4_l.cur",
-                        "SizeWE": "%SystemRoot%\\cursors\\size3_l.cur",
-                        "SizeAll": "%SystemRoot%\\cursors\\move_l.cur",
-                        "UpArrow": "%SystemRoot%\\cursors\\up_l.cur",
-                        "SizeNESW": "%SystemRoot%\\cursors\\size1_l.cur",
-                        "SizeNWSE": "%SystemRoot%\\cursors\\size2_l.cur",
-                        "AppStarting": "%SystemRoot%\\cursors\\wait_l.cur"
-                    },
-                    "options": {
-                        "hKey": "HKEY_CURRENT_USER",
-                        "path": "Control Panel\\Cursors",
-                        "dataTypes": {
-                            "Arrow": "REG_SZ",
-                            "Hand": "REG_SZ",
-                            "Help": "REG_SZ",
-                            "AppStarting": "REG_SZ",
-                            "No": "REG_SZ",
-                            "NWPen": "REG_SZ",
-                            "SizeAll": "REG_SZ",
-                            "SizeNESW": "REG_SZ",
-                            "SizeNS": "REG_SZ",
-                            "SizeNWSE": "REG_SZ",
-                            "SizeWE": "REG_SZ",
-                            "UpArrow": "REG_SZ",
-                            "Wait": "REG_SZ"
-                        }
-                    }
-                }]
-            },
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        }
-    }, {
+    },
+    // {
+    //     name: "Testing os_common using default matchmaker",
+    //     gpiiKey: "os_common",
+    //     initialState: {
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": false
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": false
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     },
+    //     settingsHandlers: {
+    //         "gpii.windows.spiSettingsHandler": {
+    //             "com.microsoft.windows.mouseTrailing": [
+    //                 {
+    //                     "settings": {
+    //                         "MouseTrails": {
+    //                             "path": {
+    //                                 "get": "pvParam",
+    //                                 "set": "uiParam"
+    //                             },
+    //                             "value": 10
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETMOUSETRAILS",
+    //                         "setAction": "SPI_SETMOUSETRAILS",
+    //                         "uiParam": 0,
+    //                         "pvParam": {
+    //                             "type": "BOOL"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.mouseKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "MouseKeysOn": {
+    //                             "path": "pvParam.dwFlags.MKF_MOUSEKEYSON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETMOUSEKEYS",
+    //                         "setAction": "SPI_SETMOUSEKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "MOUSEKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.stickyKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "StickyKeysOn": {
+    //                             "path": "pvParam.dwFlags.SKF_STICKYKEYSON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETSTICKYKEYS",
+    //                         "setAction": "SPI_SETSTICKYKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "STICKYKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.filterKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "FilterKeysEnable": {
+    //                             "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
+    //                             "value": false
+    //                         },
+    //                         "BounceKeysInterval": {
+    //                             "path": "pvParam.iBounceMSec",
+    //                             "value": 0
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETFILTERKEYS",
+    //                         "setAction": "SPI_SETFILTERKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "FILTERKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         },
+    //         "gpii.windows.registrySettingsHandler": {
+    //             "com.microsoft.windows.magnifier": [{ // magnifier stuff
+    //                 "settings": {
+    //                     "Invert": 1,
+    //                     "Magnification": 150,
+    //                     "MagnificationMode": 3,
+    //                     "FollowFocus": 0,
+    //                     "FollowCaret": 1,
+    //                     "FollowMouse": 1
+    //                 },
+    //                 "options": {
+    //                     "hKey": "HKEY_CURRENT_USER",
+    //                     "path": "Software\\Microsoft\\ScreenMagnifier",
+    //                     "dataTypes": {
+    //                         "Magnification": "REG_DWORD",
+    //                         "Invert": "REG_DWORD",
+    //                         "FollowFocus": "REG_DWORD",
+    //                         "FollowCaret": "REG_DWORD",
+    //                         "FollowMouse": "REG_DWORD",
+    //                         "MagnificationMode": "REG_DWORD"
+    //                     }
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.cursors": [{ // cursor size stuff
+    //                 "settings": {
+    //                     "No": "%SystemRoot%\\cursors\\no_l.cur",
+    //                     "Hand": "",
+    //                     "Help": "%SystemRoot%\\cursors\\help_l.cur",
+    //                     "Wait": "%SystemRoot%\\cursors\\busy_l.cur",
+    //                     "Arrow": "%SystemRoot%\\cursors\\arrow_l.cur",
+    //                     "NWPen": "%SystemRoot%\\cursors\\pen_l.cur",
+    //                     "SizeNS": "%SystemRoot%\\cursors\\size4_l.cur",
+    //                     "SizeWE": "%SystemRoot%\\cursors\\size3_l.cur",
+    //                     "SizeAll": "%SystemRoot%\\cursors\\move_l.cur",
+    //                     "UpArrow": "%SystemRoot%\\cursors\\up_l.cur",
+    //                     "SizeNESW": "%SystemRoot%\\cursors\\size1_l.cur",
+    //                     "SizeNWSE": "%SystemRoot%\\cursors\\size2_l.cur",
+    //                     "AppStarting": "%SystemRoot%\\cursors\\wait_l.cur"
+    //                 },
+    //                 "options": {
+    //                     "hKey": "HKEY_CURRENT_USER",
+    //                     "path": "Control Panel\\Cursors",
+    //                     "dataTypes": {
+    //                         "Arrow": "REG_SZ",
+    //                         "Hand": "REG_SZ",
+    //                         "Help": "REG_SZ",
+    //                         "AppStarting": "REG_SZ",
+    //                         "No": "REG_SZ",
+    //                         "NWPen": "REG_SZ",
+    //                         "SizeAll": "REG_SZ",
+    //                         "SizeNESW": "REG_SZ",
+    //                         "SizeNS": "REG_SZ",
+    //                         "SizeNWSE": "REG_SZ",
+    //                         "SizeWE": "REG_SZ",
+    //                         "UpArrow": "REG_SZ",
+    //                         "Wait": "REG_SZ"
+    //                     }
+    //                 }
+    //             }]
+    //         },
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Testing os_common - magnifier running on startup",
+    //     gpiiKey: "os_common",
+    //     initialState: {
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": false
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     },
+    //     settingsHandlers: {
+    //         "gpii.windows.spiSettingsHandler": {
+    //             "com.microsoft.windows.mouseTrailing": [
+    //                 {
+    //                     "settings": {
+    //                         "MouseTrails": {
+    //                             "path": {
+    //                                 "get": "pvParam",
+    //                                 "set": "uiParam"
+    //                             },
+    //                             "value": 10
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETMOUSETRAILS",
+    //                         "setAction": "SPI_SETMOUSETRAILS",
+    //                         "uiParam": 0,
+    //                         "pvParam": {
+    //                             "type": "BOOL"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.mouseKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "MouseKeysOn": {
+    //                             "path": "pvParam.dwFlags.MKF_MOUSEKEYSON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETMOUSEKEYS",
+    //                         "setAction": "SPI_SETMOUSEKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "MOUSEKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.stickyKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "StickyKeysOn": {
+    //                             "path": "pvParam.dwFlags.SKF_STICKYKEYSON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETSTICKYKEYS",
+    //                         "setAction": "SPI_SETSTICKYKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "STICKYKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.filterKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "FilterKeysEnable": {
+    //                             "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
+    //                             "value": false
+    //                         },
+    //                         "BounceKeysInterval": {
+    //                             "path": "pvParam.iBounceMSec",
+    //                             "value": 0
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETFILTERKEYS",
+    //                         "setAction": "SPI_SETFILTERKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "FILTERKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         },
+    //         "gpii.windows.registrySettingsHandler": {
+    //             "com.microsoft.windows.magnifier": [{ // magnifier stuff
+    //                 "settings": {
+    //                     "Invert": 1,
+    //                     "Magnification": 150,
+    //                     "MagnificationMode": 3,
+    //                     "FollowFocus": 0,
+    //                     "FollowCaret": 1,
+    //                     "FollowMouse": 1
+    //                 },
+    //                 "options": {
+    //                     "hKey": "HKEY_CURRENT_USER",
+    //                     "path": "Software\\Microsoft\\ScreenMagnifier",
+    //                     "dataTypes": {
+    //                         "Magnification": "REG_DWORD",
+    //                         "Invert": "REG_DWORD",
+    //                         "FollowFocus": "REG_DWORD",
+    //                         "FollowCaret": "REG_DWORD",
+    //                         "FollowMouse": "REG_DWORD",
+    //                         "MagnificationMode": "REG_DWORD"
+    //                     }
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.cursors": [{ // cursor size stuff
+    //                 "settings": {
+    //                     "No": "%SystemRoot%\\cursors\\no_l.cur",
+    //                     "Hand": "",
+    //                     "Help": "%SystemRoot%\\cursors\\help_l.cur",
+    //                     "Wait": "%SystemRoot%\\cursors\\busy_l.cur",
+    //                     "Arrow": "%SystemRoot%\\cursors\\arrow_l.cur",
+    //                     "NWPen": "%SystemRoot%\\cursors\\pen_l.cur",
+    //                     "SizeNS": "%SystemRoot%\\cursors\\size4_l.cur",
+    //                     "SizeWE": "%SystemRoot%\\cursors\\size3_l.cur",
+    //                     "SizeAll": "%SystemRoot%\\cursors\\move_l.cur",
+    //                     "UpArrow": "%SystemRoot%\\cursors\\up_l.cur",
+    //                     "SizeNESW": "%SystemRoot%\\cursors\\size1_l.cur",
+    //                     "SizeNWSE": "%SystemRoot%\\cursors\\size2_l.cur",
+    //                     "AppStarting": "%SystemRoot%\\cursors\\wait_l.cur"
+    //                 },
+    //                 "options": {
+    //                     "hKey": "HKEY_CURRENT_USER",
+    //                     "path": "Control Panel\\Cursors",
+    //                     "dataTypes": {
+    //                         "Arrow": "REG_SZ",
+    //                         "Hand": "REG_SZ",
+    //                         "Help": "REG_SZ",
+    //                         "AppStarting": "REG_SZ",
+    //                         "No": "REG_SZ",
+    //                         "NWPen": "REG_SZ",
+    //                         "SizeAll": "REG_SZ",
+    //                         "SizeNESW": "REG_SZ",
+    //                         "SizeNS": "REG_SZ",
+    //                         "SizeNWSE": "REG_SZ",
+    //                         "SizeWE": "REG_SZ",
+    //                         "UpArrow": "REG_SZ",
+    //                         "Wait": "REG_SZ"
+    //                     }
+    //                 }
+    //             }]
+    //         },
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // },
+    //  {
+    //     name: "Testing os_common - magnifier and keyboard both running on startup",
+    //     gpiiKey: "os_common",
+    //     initialState: {
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     },
+    //     settingsHandlers: {
+    //         "gpii.windows.spiSettingsHandler": {
+    //             "com.microsoft.windows.mouseTrailing": [
+    //                 {
+    //                     "settings": {
+    //                         "MouseTrails": {
+    //                             "path": {
+    //                                 "get": "pvParam",
+    //                                 "set": "uiParam"
+    //                             },
+    //                             "value": 10
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETMOUSETRAILS",
+    //                         "setAction": "SPI_SETMOUSETRAILS",
+    //                         "uiParam": 0,
+    //                         "pvParam": {
+    //                             "type": "BOOL"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.mouseKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "MouseKeysOn": {
+    //                             "path": "pvParam.dwFlags.MKF_MOUSEKEYSON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETMOUSEKEYS",
+    //                         "setAction": "SPI_SETMOUSEKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "MOUSEKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.stickyKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "StickyKeysOn": {
+    //                             "path": "pvParam.dwFlags.SKF_STICKYKEYSON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETSTICKYKEYS",
+    //                         "setAction": "SPI_SETSTICKYKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "STICKYKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ],
+    //             "com.microsoft.windows.filterKeys": [
+    //                 {
+    //                     "settings": {
+    //                         "FilterKeysEnable": {
+    //                             "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
+    //                             "value": false
+    //                         },
+    //                         "BounceKeysInterval": {
+    //                             "path": "pvParam.iBounceMSec",
+    //                             "value": 0
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETFILTERKEYS",
+    //                         "setAction": "SPI_SETFILTERKEYS",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "FILTERKEYS"
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         },
+    //         "gpii.windows.registrySettingsHandler": {
+    //             "com.microsoft.windows.magnifier": [{ // magnifier stuff
+    //                 "settings": {
+    //                     "Invert": 1,
+    //                     "Magnification": 150,
+    //                     "MagnificationMode": 3,
+    //                     "FollowFocus": 0,
+    //                     "FollowCaret": 1,
+    //                     "FollowMouse": 1
+    //                 },
+    //                 "options": {
+    //                     "hKey": "HKEY_CURRENT_USER",
+    //                     "path": "Software\\Microsoft\\ScreenMagnifier",
+    //                     "dataTypes": {
+    //                         "Magnification": "REG_DWORD",
+    //                         "Invert": "REG_DWORD",
+    //                         "FollowFocus": "REG_DWORD",
+    //                         "FollowCaret": "REG_DWORD",
+    //                         "FollowMouse": "REG_DWORD",
+    //                         "MagnificationMode": "REG_DWORD"
+    //                     }
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.cursors": [{ // cursor size stuff
+    //                 "settings": {
+    //                     "No": "%SystemRoot%\\cursors\\no_l.cur",
+    //                     "Hand": "",
+    //                     "Help": "%SystemRoot%\\cursors\\help_l.cur",
+    //                     "Wait": "%SystemRoot%\\cursors\\busy_l.cur",
+    //                     "Arrow": "%SystemRoot%\\cursors\\arrow_l.cur",
+    //                     "NWPen": "%SystemRoot%\\cursors\\pen_l.cur",
+    //                     "SizeNS": "%SystemRoot%\\cursors\\size4_l.cur",
+    //                     "SizeWE": "%SystemRoot%\\cursors\\size3_l.cur",
+    //                     "SizeAll": "%SystemRoot%\\cursors\\move_l.cur",
+    //                     "UpArrow": "%SystemRoot%\\cursors\\up_l.cur",
+    //                     "SizeNESW": "%SystemRoot%\\cursors\\size1_l.cur",
+    //                     "SizeNWSE": "%SystemRoot%\\cursors\\size2_l.cur",
+    //                     "AppStarting": "%SystemRoot%\\cursors\\wait_l.cur"
+    //                 },
+    //                 "options": {
+    //                     "hKey": "HKEY_CURRENT_USER",
+    //                     "path": "Control Panel\\Cursors",
+    //                     "dataTypes": {
+    //                         "Arrow": "REG_SZ",
+    //                         "Hand": "REG_SZ",
+    //                         "Help": "REG_SZ",
+    //                         "AppStarting": "REG_SZ",
+    //                         "No": "REG_SZ",
+    //                         "NWPen": "REG_SZ",
+    //                         "SizeAll": "REG_SZ",
+    //                         "SizeNESW": "REG_SZ",
+    //                         "SizeNS": "REG_SZ",
+    //                         "SizeNWSE": "REG_SZ",
+    //                         "SizeWE": "REG_SZ",
+    //                         "UpArrow": "REG_SZ",
+    //                         "Wait": "REG_SZ"
+    //                     }
+    //                 }
+    //             }]
+    //         },
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // },
+    {
         name: "Testing os_gnome using default matchmaker",
         gpiiKey: "os_gnome",
         initialState: {
@@ -1669,191 +1678,194 @@ gpii.tests.windows.builtIn = [
 ];
 
 gpii.tests.windows.builtInHighContrast = [
-    {
-        name: "Testing os_win_highContrast using default matchmaker",
-        gpiiKey: "os_win_highContrast",
-        gradeNames: "gpii.test.integration.actionHandlersAware.windows",
-        settingsHandlers: {
-            "gpii.windows.spiSettingsHandler": {
-                "com.microsoft.windows.highContrast": [
-                    { // high contrast settings
-                        "settings": {
-                            "HighContrastOn": {
-                                "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETHIGHCONTRAST",
-                            "setAction": "SPI_SETHIGHCONTRAST",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "HIGHCONTRAST"
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    }, {
-        name: "Testing os_common_highContrast using default matchmaker",
-        gpiiKey: "os_common_highContrast",
-        gradeNames: "gpii.test.integration.actionHandlersAware.windows",
-        settingsHandlers: {
-            "gpii.windows.spiSettingsHandler": {
-                "com.microsoft.windows.highContrast": [
-                    { // high contrast settings
-                        "settings": {
-                            "HighContrastOn": {
-                                "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETHIGHCONTRAST",
-                            "setAction": "SPI_SETHIGHCONTRAST",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "HIGHCONTRAST"
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    }, {
-        name: "Testing os_common_highContrast - magnifier running on startup",
-        gpiiKey: "os_common_highContrast",
-        gradeNames: "gpii.test.integration.actionHandlersAware.windows",
-        initialState: {
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": false
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        },
-        settingsHandlers: {
-            "gpii.windows.spiSettingsHandler": {
-                "com.microsoft.windows.highContrast": [
-                    { // high contrast settings
-                        "settings": {
-                            "HighContrastOn": {
-                                "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETHIGHCONTRAST",
-                            "setAction": "SPI_SETHIGHCONTRAST",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "HIGHCONTRAST"
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    }, {
-        name: "Testing os_common_highContrast - magnifier and keyboard both running on startup",
-        gpiiKey: "os_common_highContrast",
-        gradeNames: "gpii.test.integration.actionHandlersAware.windows",
-        initialState: {
-            "gpii.windows.enableRegisteredAT": {
-                "com.microsoft.windows.magnifier": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "verifySettings": true,
-                        retryOptions: {
-                            rewriteEvery: 0,
-                            numRetries: 20,
-                            retryInterval: 1000
-                        },
-                        "registryName": "magnifierpane",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "Magnify.exe"
-                            }
-                        ]
-                    }
-                }],
-                "com.microsoft.windows.onscreenKeyboard": [{
-                    "settings": {
-                        "running": true
-                    },
-                    "options": {
-                        "registryName": "osk",
-                        "getState": [
-                            {
-                                "type": "gpii.processReporter.find",
-                                "command": "osk.exe"
-                            }
-                        ]
-                    }
-                }]
-            }
-        },
-        settingsHandlers: {
-            "gpii.windows.spiSettingsHandler": {
-                "com.microsoft.windows.highContrast": [
-                    { // high contrast settings
-                        "settings": {
-                            "HighContrastOn": {
-                                "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
-                                "value": true
-                            }
-                        },
-                        "options": {
-                            "getAction": "SPI_GETHIGHCONTRAST",
-                            "setAction": "SPI_SETHIGHCONTRAST",
-                            "uiParam": "struct_size",
-                            "pvParam": {
-                                "type": "struct",
-                                "name": "HIGHCONTRAST"
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    }
+    // {
+    //     name: "Testing os_win_highContrast using default matchmaker",
+    //     gpiiKey: "os_win_highContrast",
+    //     gradeNames: "gpii.test.integration.actionHandlersAware.windows",
+    //     settingsHandlers: {
+    //         "gpii.windows.spiSettingsHandler": {
+    //             "com.microsoft.windows.highContrast": [
+    //                 { // high contrast settings
+    //                     "settings": {
+    //                         "HighContrastOn": {
+    //                             "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETHIGHCONTRAST",
+    //                         "setAction": "SPI_SETHIGHCONTRAST",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "HIGHCONTRAST"
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Testing os_common_highContrast using default matchmaker",
+    //     gpiiKey: "os_common_highContrast",
+    //     gradeNames: "gpii.test.integration.actionHandlersAware.windows",
+    //     settingsHandlers: {
+    //         "gpii.windows.spiSettingsHandler": {
+    //             "com.microsoft.windows.highContrast": [
+    //                 { // high contrast settings
+    //                     "settings": {
+    //                         "HighContrastOn": {
+    //                             "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETHIGHCONTRAST",
+    //                         "setAction": "SPI_SETHIGHCONTRAST",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "HIGHCONTRAST"
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Testing os_common_highContrast - magnifier running on startup",
+    //     gpiiKey: "os_common_highContrast",
+    //     gradeNames: "gpii.test.integration.actionHandlersAware.windows",
+    //     initialState: {
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": false
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     },
+    //     settingsHandlers: {
+    //         "gpii.windows.spiSettingsHandler": {
+    //             "com.microsoft.windows.highContrast": [
+    //                 { // high contrast settings
+    //                     "settings": {
+    //                         "HighContrastOn": {
+    //                             "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETHIGHCONTRAST",
+    //                         "setAction": "SPI_SETHIGHCONTRAST",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "HIGHCONTRAST"
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     }
+    // },
+    // {
+    //     name: "Testing os_common_highContrast - magnifier and keyboard both running on startup",
+    //     gpiiKey: "os_common_highContrast",
+    //     gradeNames: "gpii.test.integration.actionHandlersAware.windows",
+    //     initialState: {
+    //         "gpii.windows.enableRegisteredAT": {
+    //             "com.microsoft.windows.magnifier": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "verifySettings": true,
+    //                     retryOptions: {
+    //                         rewriteEvery: 0,
+    //                         numRetries: 20,
+    //                         retryInterval: 1000
+    //                     },
+    //                     "registryName": "magnifierpane",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "Magnify.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }],
+    //             "com.microsoft.windows.onscreenKeyboard": [{
+    //                 "settings": {
+    //                     "running": true
+    //                 },
+    //                 "options": {
+    //                     "registryName": "osk",
+    //                     "getState": [
+    //                         {
+    //                             "type": "gpii.processReporter.find",
+    //                             "command": "osk.exe"
+    //                         }
+    //                     ]
+    //                 }
+    //             }]
+    //         }
+    //     },
+    //     settingsHandlers: {
+    //         "gpii.windows.spiSettingsHandler": {
+    //             "com.microsoft.windows.highContrast": [
+    //                 { // high contrast settings
+    //                     "settings": {
+    //                         "HighContrastOn": {
+    //                             "path": "pvParam.dwFlags.HCF_HIGHCONTRASTON",
+    //                             "value": true
+    //                         }
+    //                     },
+    //                     "options": {
+    //                         "getAction": "SPI_GETHIGHCONTRAST",
+    //                         "setAction": "SPI_SETHIGHCONTRAST",
+    //                         "uiParam": "struct_size",
+    //                         "pvParam": {
+    //                             "type": "struct",
+    //                             "name": "HIGHCONTRAST"
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     }
+    // }
 ];
 
 gpii.tests.windows.builtIn.testDefs = gpii.tests.windows.builtInHighContrast.concat(gpii.tests.windows.builtIn);

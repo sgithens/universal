@@ -60,12 +60,13 @@
                     },
                     "http://registry.gpii.net/applications/com.microsoft.windows.filterKeys": {
                         "FilterKeysEnable": {
-                            "path": "pvParam.dwFlags.FKF_FILTERKEYSON",
                             "value": true
                         },
                         "BounceKeysInterval": {
-                            "path": "pvParam.iBounceMSec",
                             "value": 1000
+                        },
+                        "SlowKeysInterval": {
+                            "value": 20
                         }
                     },
                     "http://registry.gpii.net/applications/com.microsoft.windows.cursors": {
