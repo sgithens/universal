@@ -7791,9 +7791,6 @@
                             "default": 3000
                         },
                         "path": "pvParam.iTimeToMaxSpeed"
-                            "maximum": 5000,
-
-                        }
                     }
                 },
                 "capabilitiesTransformations": {
